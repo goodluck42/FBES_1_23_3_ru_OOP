@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{DD886222-7C55-4362-82C5-1FF2F683C481}</ProjectGuid>
+    <ProjectGuid>{84F14A33-8E14-40D0-A986-C365D570CD8F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>ClassesAndObjects</RootNamespace>
+    <RootNamespace>ClassesAndHeaderFiles</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -154,7 +154,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ClassesAndObjects.cpp" />
+    <ClCompile Include="ClassesAndHeaderFiles.cpp" />
+    <ClCompile Include="Student.cpp" />
+    <ClCompile Include="StudentHelper.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Student.h" />
+    <ClInclude Include="StudentHelper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
