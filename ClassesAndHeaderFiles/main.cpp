@@ -5,9 +5,9 @@
 
 int main(int argc, char* argv[])
 {
-    Student* student = new Student[3];
-
-    delete[] student;
+    Student* student = new Student{10, 20, "Samir"};
+    
+    delete student;
 
     return 0;
 }
