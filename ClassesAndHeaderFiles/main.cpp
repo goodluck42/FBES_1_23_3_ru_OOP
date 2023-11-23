@@ -5,9 +5,31 @@
 
 int main(int argc, char* argv[])
 {
-    Student* student = new Student{10, 20, "Samir"};
+    int size = 3;
     
-    delete student;
+    Student** students = new Student*[size]{};
 
+
+    for (int i = 0; i < size; ++i)
+    {
+        students[i] = new Student{};
+    }
+
+    for (int i = 0; i < size; ++i)
+    {
+        std::cout << "Student #" << i + 1 << ": \n";
+        std::cout << "Coins: " << students[i]->GetCoins() << '\n';
+        std::cout << "Diamonds: " << students[i]->GetCoins() << '\n';
+        std::cout << "Badges: " << students[i]->GetBadges() << '\n';
+        std::cout << "--------------------------" << '\n';
+    }
+
+    for (int i = 0; i < size; ++i)
+    {
+        delete students[i];
+    }
+    
+    delete[] students;
+    
     return 0;
 }

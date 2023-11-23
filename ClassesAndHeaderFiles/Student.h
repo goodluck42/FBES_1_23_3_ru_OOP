@@ -20,6 +20,7 @@ public:
     void SetCoins(int a_coins);
     const char* GetName();
     void SetName(const char* a_name);
+    int GetBadges();
 
     static int GetObjects();
 };

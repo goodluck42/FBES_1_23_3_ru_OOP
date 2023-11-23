@@ -26,6 +26,8 @@ Student::Student(int a_diamonds, int a_coins, const char* a_name, int a_badges)
 {
     std::cout << "Student::Student(int a_diamonds, int a_coins, const char* a_name, int a_badges)" << '\n';
 
+    m_name = nullptr;
+    
     SetDiamonds(a_diamonds);
     SetCoins(a_coins);
     SetName(a_name);
@@ -73,6 +75,11 @@ void Student::SetName(const char* a_name)
     m_name = new char[len];
 
     strcpy(m_name, a_name);
+}
+
+int Student::GetBadges()
+{
+    return m_badges;
 }
 
 int Student::GetObjects()
