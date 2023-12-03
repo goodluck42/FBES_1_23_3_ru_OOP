@@ -70,7 +70,7 @@ public:
         return *this;
     }
 
-    String operator*(int aTimes)
+    String operator*(int aTimes) const
     {
         int totalSize = (mSize * aTimes);
         char* data = new char[totalSize + 1]{};
@@ -83,8 +83,32 @@ public:
         return String{totalSize, data};
     }
 
-    const char* GetData()
+    const char& operator[](int aIndex) const
     {
+        return mData[aIndex];
+    }
+
+    char& operator[](int aIndex)
+    {
+        return mData[aIndex];
+    }
+    
+    const char* GetData() const
+    {
+        return mData;
+    }
+
+    explicit operator int()
+    {
+        std::cout << "converted to int" << '\n';
+        
+        return std::atoi(mData);
+    }
+
+    operator const char*()
+    {
+        std::cout << "converted to const char*" << '\n';
+        
         return mData;
     }
     
@@ -102,17 +126,70 @@ void f(const String& s)
 {
 }
 
+class Number
+{
+public:
+    Number(int aValue) : mValue(aValue) {  }
+    
+    bool operator>(const Number& aOther)
+    {
+        return mValue > aOther.mValue;
+    }
+    
+    bool operator<(const Number& aOther)
+    {
+        return mValue < aOther.mValue;
+    }
+
+    //auto operator<=>(const Number&) const = default;
+
+    Number& operator++() // prefix increment
+    {
+        mValue += 1;
+
+        return *this;
+    }
+
+    Number operator++(int) // postfix increment
+    {
+        Number copy{*this};
+
+        mValue += 1;
+        
+        return copy;
+    }
+        
+    int GetValue()
+    {
+        return mValue;
+    }
+private:
+    int mValue;
+};
+
 int main(int argc, char* argv[])
 {
-    String s = "abc1000";
-    s *= 2;
+    /*{
+        Number num1 = 42;
 
+        Number num2 = num1++;
 
-    int& ref;
+        std::cout << num1.GetValue() << '\n';
+        std::cout << num2.GetValue() << '\n';
+        
+    }*/
+        
+    // String s = "abc1000";
+    //
+    // s[0] = 'X';
+    //
+    // std::cout << s.GetData() << '\n';
 
-    ref = 42;
+    String s = "123";
+
+    int a = (int)s;
     
-    std::cout << s.GetData() << '\n';
+    std::cout << a << '\n';
     
     return 0;
 }
