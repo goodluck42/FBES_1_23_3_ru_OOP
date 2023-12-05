@@ -156,6 +156,25 @@ void f(int&); // 2 - ReferenceType
 void f(int*); // 1 - ValueType
 
 
+
+class String
+{
+public:
+    String(const char* cstr)
+    {
+        
+    }
+    void Append(const String& str)
+    {
+        
+    }
+
+    void Append(const char* cstr)
+    {
+        
+    }
+};
+
 // Тимур - 1
 // Вагиф - 2
 // Айхан - 1
@@ -184,6 +203,14 @@ int main(int argc, char* argv[])
     {
         std::cout << u->GetLogin() << '\n';
         std::cout << u->GetPassword() << '\n';
+    }
+
+    {
+        String s1{"Helloy"};
+        String s2{"C++"};
+
+        s2.Append(s1);
+        s2.Append("C#");
     }
     
     return 0;
