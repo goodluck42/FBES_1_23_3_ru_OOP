@@ -1,6 +1,17 @@
 #include <iostream>
 #include <string>
 
+
+class Array
+{
+public:
+    Array(const Array&) = delete;
+    Array(Array&&) = delete;
+
+    void operator=(const Array&) = delete;
+    void operator=(Array&&) = delete;
+};
+
 class String
 {
 public:
@@ -20,7 +31,7 @@ public:
 
     String(const char* aString)
     {
-        std::cout << "constructor" << '\n';
+        std::cout << "cstr constructor" << '\n';
         mSize = (int)std::strlen(aString);
         mData = new char[mSize + 1]{};
 
@@ -30,10 +41,22 @@ public:
     String(const String& aOther)
     {
         std::cout << "copy constructor" << '\n';
+
         mSize = aOther.mSize;
         mData = new char[mSize + 1]{};
 
         std::memcpy(mData, aOther.mData, mSize + 1);
+    }
+
+    String(String&& aOther) noexcept
+    {
+        std::cout << "move constructor" << '\n';
+
+        mData = aOther.mData;
+        mSize = aOther.mSize;
+
+        aOther.mData = nullptr;
+        aOther.mSize = 0;
     }
 
     String& operator=(const String& aOther) // copy assignment operator
@@ -47,6 +70,24 @@ public:
             mSize = aOther.mSize;
             mData = new char[mSize + 1]{};
             std::memcpy(mData, aOther.mData, mSize + 1);
+        }
+
+        return *this;
+    }
+
+    String& operator=(String&& aOther) noexcept // move assignment operator
+    {
+        std::cout << "move assignment operator" << '\n';
+
+        if (this != &aOther)
+        {
+            this->~String();
+
+            mData = aOther.mData;
+            mSize = aOther.mSize;
+
+            aOther.mData = nullptr;
+            aOther.mSize = 0;
         }
 
         return *this;
@@ -66,7 +107,7 @@ public:
 
         mSize = totalSize;
         mData = data;
-        
+
         return *this;
     }
 
@@ -92,7 +133,7 @@ public:
     {
         return mData[aIndex];
     }
-    
+
     const char* GetData() const
     {
         return mData;
@@ -101,24 +142,24 @@ public:
     explicit operator int()
     {
         std::cout << "converted to int" << '\n';
-        
+
         return std::atoi(mData);
     }
 
     operator const char*()
     {
         std::cout << "converted to const char*" << '\n';
-        
+
         return mData;
     }
-    
+
 private:
     char* mData;
     int mSize;
-    
+
     String(int aSize, char* aData) : mData(aData), mSize(aSize)
     {
-        
+        std::cout << "strange constructor" << '\n';
     }
 };
 
@@ -126,16 +167,25 @@ void f(const String& s)
 {
 }
 
+void f(String&& s)
+{
+    s *= 2;
+
+    std::cout << s.GetData() << '\n';
+}
+
 class Number
 {
 public:
-    Number(int aValue) : mValue(aValue) {  }
-    
+    Number(int aValue) : mValue(aValue)
+    {
+    }
+
     bool operator>(const Number& aOther)
     {
         return mValue > aOther.mValue;
     }
-    
+
     bool operator<(const Number& aOther)
     {
         return mValue < aOther.mValue;
@@ -150,19 +200,45 @@ public:
         return *this;
     }
 
+    Number operator-()
+    {
+        Number copy{*this};
+
+        copy.mValue *= -1;
+
+        return copy;
+    }
+
+    Number operator-(const Number& aRhs)
+    {
+        Number copy{*this};
+
+        copy.mValue -= aRhs.mValue;
+
+        return copy;
+    }
+
+    Number& operator-=(const Number& aRhs)
+    {
+        mValue -= aRhs.mValue;
+
+        return *this;
+    }
+
     Number operator++(int) // postfix increment
     {
         Number copy{*this};
 
         mValue += 1;
-        
+
         return copy;
     }
-        
+
     int GetValue()
     {
         return mValue;
     }
+
 private:
     int mValue;
 };
@@ -178,18 +254,46 @@ int main(int argc, char* argv[])
         std::cout << num2.GetValue() << '\n';
         
     }*/
-        
+
     // String s = "abc1000";
     //
     // s[0] = 'X';
     //
     // std::cout << s.GetData() << '\n';
 
-    String s = "123";
 
-    int a = (int)s;
-    
-    std::cout << a << '\n';
-    
+    // Calling move constructor
+    std::cout << "Calling move constructor\n-----------" << '\n';
+    {
+        String s1{"C#"};
+        String s2{std::move(s1)};
+    }
+
+    // Calling move assignment (=)
+
+    std::cout << "Calling move assignment (=)\n-----------" << '\n';
+    {
+        String s1{"C#"};
+        String s2{"C++"};
+
+        s2 = std::move(s1);
+    }
+
+    // Calling copy assignment (=)
+
+
+    std::cout << "Calling copy assignment (=)\n-----------" << '\n';
+    {
+        String s1{"C#"};
+        String s2{"C++"};
+
+        s2 = s1;
+    }
+
+
+    //f((String&&)s1);
+
+    //std::cout << (void*)s1.GetData() << '\n';
+
     return 0;
 }
