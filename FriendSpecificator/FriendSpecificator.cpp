@@ -36,7 +36,6 @@ private:
     }
 };
 
-
 std::ostream& operator<<(std::ostream& aOs, const User& aUser) // 'os' - left hand side; 'user' - right hand side
 {
     aOs << "Login = " << aUser.mLogin << '\n';
