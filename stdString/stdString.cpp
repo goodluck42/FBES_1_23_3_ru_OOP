@@ -137,21 +137,34 @@ int main(int argc, char* argv[])
         }
     }*/
 
-    {
-        std::string s = "Hello world!";
-
-        const char* data = s.data();
-        const char* data2 = s.c_str();
-        
-        std::cout << data;
-    }
+    // data & c_str
+    // {
+    //     std::string s = "Hello world!";
+    //
+    //     const char* data = s.data();
+    //     const char* data2 = s.c_str();
+    //     
+    //     std::cout << data;
+    // }
 
 
     // array of strings
-    {
-        std::string* strings = new std::string[6];
+    // {
+    //     std::string* strings = new std::string[6];
+    //
+    //     delete[] strings;
+    // }
 
-        delete[] strings;
+    // read string (proper way)
+    {
+        std::string str;
+
+        std::getline(std::cin, str); // reads full input
+
+        //std::cin >> str; // reads till space
+
+        
+        std::cout << str;
     }
 
 
