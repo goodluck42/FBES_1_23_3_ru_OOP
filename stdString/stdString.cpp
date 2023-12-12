@@ -1,3 +1,4 @@
+#include <fstream>
 #include <iostream>
 #include <string>
 
@@ -156,17 +157,48 @@ int main(int argc, char* argv[])
     // }
 
     // read string (proper way)
-    {
-        std::string str;
+    // {
+    //     std::string str;
+    //
+    //     std::getline(std::cin, str); // reads full input
+    //
+    //     //std::cin >> str; // reads till space
+    //     
+    //     
+    //     std::cout << str;
+    // }
 
-        std::getline(std::cin, str); // reads full input
+    // write to file
+    // {
+    //     std::ofstream file{"file.txt"};
+    //
+    //     if (file.is_open())
+    //     {
+    //         std::cout << "opened!" << '\n';
+    //         
+    //         file << "Helloy";
+    //         file.seekp(0);
+    //         
+    //         file.close();
+    //     }
+    // }
 
-        //std::cin >> str; // reads till space
+    /*{
+        std::ifstream file{"file.txt"};
 
-        
-        std::cout << str;
-    }
+        if (file.is_open())
+        {
+            std::cout << "opened!" << '\n';
 
+            std::string line;
+
+            file >> line;
+
+            std::cout << line << '\n';
+            
+            file.close();
+        }
+    }*/
 
     return 0;
 }
