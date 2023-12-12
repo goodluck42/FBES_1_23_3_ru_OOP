@@ -184,7 +184,7 @@ int main(int argc, char* argv[])
     // }
 
     // read from file
-    /*{
+    {
         std::ifstream file{"file.txt"};
 
         if (file.is_open())
@@ -199,7 +199,7 @@ int main(int argc, char* argv[])
             
             file.close();
         }
-    }*/
+    }
 
     return 0;
 }
