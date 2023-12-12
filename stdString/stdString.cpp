@@ -9,17 +9,18 @@ class Array
 public:
     Array(int aSize) : mSize(aSize), mArr(nullptr)
     {
-        
     }
+
     void Sort(Less less);
     void Sort(Greater greater);
+
 private:
     int mSize;
     int* mArr;
 };
 
 int main(int argc, char* argv[])
-{    
+{
     // {
     //     std::string s = "Hello C++ strings";
     //
@@ -141,10 +142,18 @@ int main(int argc, char* argv[])
 
         const char* data = s.data();
         const char* data2 = s.c_str();
+        
         std::cout << data;
     }
 
-    
-    
+
+    // array of strings
+    {
+        std::string* strings = new std::string[6];
+
+        delete[] strings;
+    }
+
+
     return 0;
 }
