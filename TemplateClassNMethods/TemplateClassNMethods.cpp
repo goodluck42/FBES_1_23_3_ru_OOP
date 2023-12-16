@@ -82,6 +82,11 @@ private:
     int mCapacity;
 };
 
+struct Pair
+{
+    std::string Key; // K
+    int Value; // V
+};
 
 int main(int argc, char* argv[])
 {
@@ -100,6 +105,8 @@ int main(int argc, char* argv[])
 
         arr2.Method<int>();
     }
+    
+    
 
 
     return 0;
