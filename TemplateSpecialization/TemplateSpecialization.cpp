@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <type_traits>
 
 template <typename T> // generic specialization
 class Array
@@ -137,6 +138,37 @@ void Foo(Args&&... args)
     (Handle(args), ...);
 }
 
+template<typename T>
+struct is_const_char_ptr
+{
+    constexpr static bool value = false;
+};
+
+template<>
+struct is_const_char_ptr<const char*>
+{
+    constexpr static bool value = true;
+};
+
+template<typename T>
+void Foo()
+{
+    if (std::is_pointer<T>::value)
+    {
+        std::cout << "T is pointer" << '\n';
+    }
+
+    if (std::is_const<T>::value)
+    {
+        std::cout << "T is const" << '\n';
+    }
+
+    if (is_const_char_ptr<T>::value)
+    {
+        std::cout << "T is const char pointer" << '\n';
+    }
+}
+
 int main(int argc, char* argv[])
 {
     // A* arr = (A*)malloc(sizeof(A) * 4);
@@ -169,7 +201,22 @@ int main(int argc, char* argv[])
 
     //Foo(1, 2.2f, 3.3f);
 
-    print(1, 2, 3, 4, "hello!");
+    //print(1, 2, 3, 4, "hello!");
+
+    
+    
+    /*{
+        if(std::is_pointer<int*>::value)
+        {
+            std::cout << "Is ptr" << '\n';
+        }
+        else
+        {
+            std::cout << "Not a pointer" << '\n';
+        }
+    }*/
+
+    Foo<const char*>();
     
     return 0;
 }

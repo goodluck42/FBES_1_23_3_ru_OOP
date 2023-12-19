@@ -243,6 +243,57 @@ private:
     int mValue;
 };
 
+
+String Foo()
+{
+    return "Hello from Foo";
+}
+
+
+class Test
+{
+public:
+    void operator()(int)
+    {
+    }
+
+    void operator+(int)
+    {
+    }
+
+    void operator*(int)
+    {
+    }
+};
+
+class C
+{
+};
+
+class B
+{
+public:
+    C BMethod() { return C{}; }
+};
+
+
+class A
+{
+public:
+    ~A() { std::cout << "~A()\n"; }
+    A()
+    {
+        random = rand();
+    }
+    
+    void Foo()
+    {
+        std::cout << this->random << '\n';
+    }
+private:
+    int random;
+};
+
 int main(int argc, char* argv[])
 {
     /*{
@@ -254,7 +305,7 @@ int main(int argc, char* argv[])
         std::cout << num2.GetValue() << '\n';
         
     }*/
-    
+
     // String s = "abc1000";
     //
     // s[0] = 'X';
@@ -263,37 +314,50 @@ int main(int argc, char* argv[])
 
 
     // Calling move constructor
-    std::cout << "Calling move constructor\n-----------" << '\n';
-    {
-        String s1{"C#"};
-        String s2{std::move(s1)};
-    }
+    // std::cout << "Calling move constructor\n-----------" << '\n';
+    // {
+    //     String s1{"C#"};
+    //     String s2{std::move(s1)};
+    // }
 
     // Calling move assignment (=)
 
-    std::cout << "Calling move assignment (=)\n-----------" << '\n';
-    {
-        String s1{"C#"};
-        String s2{"C++"};
-
-        s2 = std::move(s1);
-    }
+    // std::cout << "Calling move assignment (=)\n-----------" << '\n';
+    // {
+    //     String s1{"C#"};
+    //     String s2{"C++"};
+    //
+    //     s2 = std::move(s1);
+    // }
 
     // Calling copy assignment (=)
-
-
-    std::cout << "Calling copy assignment (=)\n-----------" << '\n';
-    {
-        String s1{"C#"};
-        String s2{"C++"};
-
-        s2 = s1;
-    }
+    
+    // std::cout << "Calling copy assignment (=)\n-----------" << '\n';
+    // {
+    //     String s1{"C#"};
+    //     String s2{"C++"};
+    //
+    //     s2 = s1;
+    // }
 
 
     //f((String&&)s1);
 
     //std::cout << (void*)s1.GetData() << '\n';
 
+    A obj;
+    A obj2;
+
+
+    A::Foo(&obj);
+    A::Foo(&obj2);
+    
+    obj.Foo();
+    obj2.Foo();
+    
+    // void(A::*MethodPtr)(int) = &A::Foo;
+    //
+    // MethodPtr(obj, 123);
+    
     return 0;
 }
