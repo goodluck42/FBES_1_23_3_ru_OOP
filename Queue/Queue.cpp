@@ -7,6 +7,7 @@ class Queue
 public:
     void Enqueue(const T& AElement) // adds an element
     {
+        
     }
 
     void Enqueue(T&& AElement)
@@ -131,6 +132,8 @@ public:
 
 int main(int argc, char* argv[])
 {
+    // Stack - LIFO
+    // Queue - FIFO
     int LCapacity = 32;
     int LSize = 0;
 
@@ -153,10 +156,6 @@ int main(int argc, char* argv[])
     }
     
     operator delete(LUsers);
-
-    std::queue<int> q;
-
-    
     
     return 0;
 }
