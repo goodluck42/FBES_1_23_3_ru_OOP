@@ -3,8 +3,10 @@
 #include <type_traits>
 #include <vector>
 
+template<typename T>
 class Object
 {
+    template<typename T2> friend std::ostream& operator<<(std::ostream& aOs, const Object<T2>& aObject);
 public:
     ~Object()
     {
@@ -13,6 +15,7 @@ public:
 
     Object(int value)
     {
+        this->~T();
         std::cout << "ctor" << '\n';
     }
     
@@ -24,11 +27,22 @@ public:
     {
         std::cout << "move" << '\n';
     }
+private:
+    int mSize;
 };
+
+
+template<typename T> std::ostream& operator<<(std::ostream& aOs, const Object<T>& aObject)
+{
+    std::cout << aObject.mSize << '\n';
+
+    return aOs;
+}
+
 
 int main(int argc, char* argv[])
 {
-    std::vector<Object> arr;
+    std::vector<Object<int>> arr;
 
     arr.emplace(arr.begin() + 1, 42);
 
