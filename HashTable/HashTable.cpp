@@ -11,6 +11,7 @@ int main(int argc, char* argv[])
 
     int LBuckets = 12;
     
+    std::cout << LHashFn(LName1) << '\n';
     std::cout << LHashFn(LName1) % LBuckets << '\n';
     std::cout << LHashFn(LName2) % LBuckets << '\n';
     std::cout << LHashFn(LName3) % LBuckets << '\n';
