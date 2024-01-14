@@ -61,6 +61,7 @@ public:
     {
         MSpeed *= 2;
     }
+    
     void Show()
     {
         std::cout << "Color = " << GetColor() << '\n'; 
@@ -84,19 +85,97 @@ class Bicycle
 //
 // class D : public C {};
 
+class Foo
+{
+public:
+    Foo()
+    {
+        PublicField = 10;
+        ProtectedField = 20;
+        PrivateField = 30;
+    }
+    int PublicField;
+protected:
+    int ProtectedField;
+private:
+    int PrivateField;
+};
+
+class Bar_Public : public Foo
+{
+public:
+    Bar_Public()
+    {
+        this->ProtectedField; // protected
+        this->PublicField; // public
+    }
+};
+
+class Bar_Protected : protected Foo
+{
+public:
+    Bar_Protected()
+    {
+        this->ProtectedField; // protected
+        this->PublicField; // protected
+    }
+};
+
+class Bar_SubProtected : public Bar_Protected
+{
+public:
+    Bar_SubProtected()
+    {
+        this->ProtectedField;
+        this->PublicField;
+    }
+};
+
+class Bar_Private : private Foo
+{
+public:
+    Bar_Private()
+    {
+        this->ProtectedField; // private
+        this->PublicField; // private
+    }
+};
+
+class Bar_SubPrivate : public Bar_Private
+{
+public:
+    Bar_SubPrivate()
+    {
+        // this->ProtectedField; // error
+        // this->PublicField; // error
+    }
+};
+
+
 int main(int argc, char* argv[])
 {
-    Motorcycle LMotorcycle{1, 255};
+    // Motorcycle LMotorcycle{1, 255};
+    //
+    // LMotorcycle.Accelerate();
+    // LMotorcycle.Accelerate();
+    //
+    // LMotorcycle.SetColor(123);
+    //
+    // LMotorcycle.UseNitro();
+    //
+    // LMotorcycle.Show();
 
-    LMotorcycle.Accelerate();
-    LMotorcycle.Accelerate();
+    //
+    {
+        Bar_Public obj1;
 
-    LMotorcycle.SetColor(123);
+        obj1.PublicField;
 
-    LMotorcycle.UseNitro();
-    
-    LMotorcycle.Show();
-    
+
+        Bar_Protected obj2;
+
+        // obj2.PublicField; // protected
+    }    
     return 0;
 }
 
