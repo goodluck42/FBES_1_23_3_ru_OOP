@@ -1,72 +1,67 @@
 #include <iostream>
 #include <initializer_list>
 
-template<typename T>
-class ArrayIterator
-{
-public:
-    ArrayIterator(T* AArr) : MArr(AArr)
-    {
-        MIndex = 0;
-    }
-
-    T& operator*()
-    {
-        return MArr[MIndex];
-    }
-
-    ArrayIterator& operator++()
-    {
-        MIndex += 1;
-
-        return *this;
-    }
-
-    bool operator!=(const ArrayIterator& AOther)
-    {
-        if (AOther.MArr != MArr)
-        {
-            return false;
-        }
-
-        return AOther.MIndex != MIndex;
-    }
-    
-private:
-    T* MArr;
-    int MIndex;
-};
-
 template <typename T>
 class Array
 {
 public:
+    class Iterator
+    {
+    public:
+        Iterator(T* APtr) : MPtr(APtr)
+        {
+        }
+
+        T& operator*()
+        {
+            return *MPtr;
+        }
+
+        Iterator& operator++()
+        {
+            MPtr += 1;
+
+            return *this;
+        }
+
+        bool operator!=(const Iterator& AOther)
+        {
+            return AOther.MPtr != MPtr;
+        }
+
+    private:
+        T* MPtr;
+    };
+    
     ~Array()
     {
         delete[] MArr;
     }
-    Array(std::initializer_list<T> AList)
+
+    Array(std::initializer_list<T> AList) : MSize(AList.size())
     {
         int i = 0;
-        MArr = new T[AList.size()];
-        
+        MArr = new T[MSize];
+
         for (auto& element : AList)
         {
             MArr[i++] = element;
         }
     }
 
-    ArrayIterator<T> begin()
+    Iterator begin()
     {
-        return ArrayIterator<T>{MArr};
+        return Iterator{MArr};
     }
 
-    ArrayIterator<T> end()
+    Iterator end()
     {
-        return ArrayIterator<T>{MArr};
+        return Iterator{MArr + MSize};
     }
+
 private:
     T* MArr;
+    int MSize;
 };
 
 int main(int argc, char* argv[])
@@ -75,10 +70,31 @@ int main(int argc, char* argv[])
 
     for (auto& elem : arr)
     {
-        
+        std::cout << elem << '\t';
     }
 
+    // {
+    //     auto end = arr.end();
+    //
+    //     for (auto begin = arr.begin(); begin != end; ++begin)
+    //     {
+    //         std::cout << *begin << '\t';
+    //     }
+    // }
+    
+
+    // {
+    //     auto begin = arr.begin();
+    //     auto end = arr.end();
+    //
+    //     while (begin != end)
+    //     {
+    //         std::cout << *begin << '\t';
+    //
+    //         ++begin;
+    //     }
+    // }
+    
+    
     return 0;
 }
-
-
