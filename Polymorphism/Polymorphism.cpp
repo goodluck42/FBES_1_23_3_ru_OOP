@@ -1,19 +1,46 @@
 #include <iostream>
 
+struct IMoveable // interface
+{
+    virtual void Move() = 0; // pure virtual function/method
+};
 
-class Vehicle // abstract class
+class Cat : public IMoveable
 {
 public:
-    virtual ~Vehicle()
+    virtual void Move() override
     {
-        std::cout << "~Vehicle()\n";
+        
     }
+};
+
+struct A
+{
+    
+};
+
+struct B : public A
+{
+public:
+    int GetA()
+    {
+        return a;
+    }
+private:
+    int a;
+};
+
+class Vehicle : public IMoveable // abstract class
+{
+    // Move, Accelerate
+    // [nullptr, 0x42]
+public:
+    virtual ~Vehicle() = default;
     Vehicle() : MSpeed(), MColor(), MWeight()
     {
         std::cout << "Vehicle()" << '\n';
     }
-    virtual void Move() = 0; // pure virtual function
-    virtual void Accelerate()
+    virtual void Accelerate() // 0x42
     {
         MSpeed += 1;
     }
@@ -29,7 +56,7 @@ protected:
     int MSpeed;
     int MColor;
     int MWeight;
-}; 
+};
 
 class Bicycle : public Vehicle
 {
@@ -53,6 +80,8 @@ public:
 
 class Car : public Vehicle
 {
+    // Move, Accelerate
+    // [0x20, 0x42]
 public:
     virtual ~Car() override
     {
@@ -63,7 +92,7 @@ public:
     {
         std::cout << "Car()\n";
     }
-    virtual void Move() override
+    virtual void Move() override // 0x20
     {
         std::cout << "Car::Move()\n";
 
@@ -73,6 +102,8 @@ public:
 
 class Motorcycle : public Vehicle
 {
+    // Move, Accelerate
+    // [0x90, 0x72]
 public:
     virtual ~Motorcycle() override
     {
@@ -82,14 +113,14 @@ public:
     {
         std::cout << "Motorcycle()" << '\n';
     }
-    virtual void Move() override
+    virtual void Move() override // 0x90
     {
         std::cout << "Motorcycle::Move()\n";
 
         MSpeed += 100;
     }
 
-    virtual void Accelerate() override
+    virtual void Accelerate() override // 0x72
     {
         MSpeed *= 2;
         
@@ -135,7 +166,7 @@ public:
 };
 
 
-class Base
+class Base // 8b
 {
 public:
     Base()
@@ -152,7 +183,7 @@ private:
     int value;
 };
 
-class Derived : public Base
+class Derived : public Base // 16b
 {
     public:
     Derived()
@@ -168,15 +199,15 @@ class Derived : public Base
 
 int main(int argc, char* argv[])
 {
-    {
-        Base* base = new Derived;
-
-        base->DoSomething();
-        
-        std::cout << sizeof(Base);
-
-        delete base;
-    }
+    // {
+    //     Base* base = new Derived;
+    //
+    //     base->DoSomething();
+    //     
+    //     std::cout << sizeof(Base);
+    //
+    //     delete base;
+    // }
     
     Vehicle* motorcycle = new Motorcycle;
     
