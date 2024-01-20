@@ -3,6 +3,14 @@
 #include <stack>
 #include <queue>
 #include <vector>
+#include <list>
+#include <forward_list>
+// 
+#include <set>
+#include <unordered_set>
+#include <map>
+#include <unordered_map>
+#include <tuple>
 
 class User
 {
@@ -18,34 +26,35 @@ public:
     {
         std::cout << "default\n";
     }
+
     User(const User& AOther)
     {
         std::cout << "copied\n";
-        
+
         Login = AOther.Login;
         Password = AOther.Password;
     }
+
     User(User&& AOther)
     {
         std::cout << "moved\n";
-        
+
         Login = std::move(AOther.Login);
         Password = std::move(AOther.Password);
     }
 
     void Foo() const
     {
-        
     }
+
     void Foo()
     {
-        
     }
-    
+
     User& operator=(const User& AOther)
     {
         std::cout << "operator=(const User& AOther)\n";
-        
+
         Login = AOther.Login;
         Password = AOther.Password;
 
@@ -55,16 +64,22 @@ public:
     User& operator=(User&& AOther)
     {
         std::cout << "operator=(const User& AOther)\n";
-        
+
         Login = std::move(AOther.Login);
         Password = std::move(AOther.Password);
 
         return *this;
     }
 
+    bool operator>(const User& AOther)
+    {
+        return Login > AOther.Login;
+    }
+
     std::string Login;
     std::string Password;
 };
+
 // void append()
 // {
 //     mdata[size] = user;
@@ -72,11 +87,54 @@ public:
 // }
 // STL - Standard Template Library
 
-template<typename... TArgs>
+template <typename... TArgs>
 User* Create(TArgs&&... AArgs)
 {
     return new User{AArgs...};
 }
+
+bool simple_predicate(const int& value)
+{
+    return value < 0;
+}
+
+void remove_all(std::list<int>& list, bool (*predicate)(const int&))
+{
+    bool deleted = false;
+
+    for (auto& value : list)
+    {
+        if (predicate(value))
+        {
+            list.remove(value);
+
+            deleted = true;
+            break;
+        }
+    }
+
+    if (deleted)
+    {
+        remove_all(list, predicate);
+    }
+}
+
+int& g()
+{
+    static int v = 42;
+
+    return v;
+}
+
+class Test
+{
+public:
+    Test() {  }
+
+    Test(const Test&) = delete;
+    Test(Test&&) = delete;
+    int value = 42;
+};
 
 int main(int argc, char* argv[])
 {
@@ -108,7 +166,7 @@ int main(int argc, char* argv[])
     //
     //     delete u;        
     // }
-    
+
     // {
     //     std::stack<User> users;
     //     
@@ -128,72 +186,240 @@ int main(int argc, char* argv[])
 
     // Vector
 
-    {
-        std::vector<User> users;
-        
-        //users.assign({User{}, User{}, User{}});
-        // users.assign(10, User{"login", "pass"});
-        //
-        // User& user = users.at(3);
-        //
-        // std::cout << user.Login << '\n';
-        // std::cout << user.Password << '\n';
+    //{
+    //std::vector<User> users;
 
-        {
-            std::vector<int> vect {10, 20, 30};
-        
-            // for (auto& value : vect)
-            // {
-            //     std::cout << value << '\n';
-            // }
+    //users.assign({User{}, User{}, User{}});
+    // users.assign(10, User{"login", "pass"});
+    //
+    // User& user = users.at(3);
+    //
+    // std::cout << user.Login << '\n';
+    // std::cout << user.Password << '\n';
 
-            // for (auto begin = vect.rbegin(); begin != vect.rend(); ++begin)
-            // {
-            //     std::cout << *begin << '\n';
-            // }
-            
-        }
+    //{
+    // std::vector<int> vect {10, 20, 30};
 
-        // {
-        //     std::vector<int> vect {10, 20, 30};
-        //     //
-        //     // for (auto& value : vect)
-        //     // {
-        //     //     value *= 2;
-        //     // }
-        //
-        //     
-        //     int* arr = vect.data();
-        //     
-        //     for (int i = 0; i < vect.size(); ++i)
-        //     {
-        //         std::cout << arr[i] << '\n';
-        //     }
-        // }
+    // for (auto& value : vect)
+    // {
+    //     std::cout << value << '\n';
+    // }
 
-        // emplace vs insert
-        {
-            std::vector<User> users;
-            
-            users.emplace_back("L1", "P1"); // 0
-            users.emplace_back("L2", "P2"); // 2
-            users.emplace_back("L3", "P3"); // 3
-            
-            users.emplace(users.begin() + 1, "FirstLogin", "FirstPass"); // emplace // 1
-            
-            // User u1{"FirstLogin", "FirstPass"}; // insert
-            // users.insert(users.begin() + 1, u1);
+    // for (auto begin = vect.rbegin(); begin != vect.rend(); ++begin)
+    // {
+    //     std::cout << *begin << '\n';
+    // }
 
-            users.erase(users.begin() + 2);
-            
-            for (auto& user : users)
-            {
-                std::cout << user.Login << '\n';
-                std::cout << user.Password << '\n';
-                std::cout << "--------------" << '\n';
-            }
-        }
-    }
+    //}
+
+    // {
+    //     std::vector<int> vect {10, 20, 30};
+    //     //
+    //     // for (auto& value : vect)
+    //     // {
+    //     //     value *= 2;
+    //     // }
+    //
+    //     
+    //     int* arr = vect.data();
+    //     
+    //     for (int i = 0; i < vect.size(); ++i)
+    //     {
+    //         std::cout << arr[i] << '\n';
+    //     }
+    // }
+
+    // emplace vs insert
+    // {
+    //     std::vector<User> users;
+    //     
+    //     users.emplace_back("L1", "P1"); // 0
+    //     users.emplace_back("L2", "P2"); // 2
+    //     users.emplace_back("L3", "P3"); // 3
+    //     
+    //     users.emplace(users.begin() + 1, "FirstLogin", "FirstPass"); // emplace // 1
+    //     
+    //     // User u1{"FirstLogin", "FirstPass"}; // insert
+    //     // users.insert(users.begin() + 1, u1);
+    //
+    //     users.erase(users.begin() + 2);
+    //     
+    //     for (auto& user : users)
+    //     {
+    //         std::cout << user.Login << '\n';
+    //         std::cout << user.Password << '\n';
+    //         std::cout << "--------------" << '\n';
+    //     }
+    // }
+    //}
+
+    // // list & forward_list
+    // {
+    //     // predicate
+    //     std::list<int> list{10, 20, -10, -20, -30, 30};
+    //     std::forward_list<int> flist{10, 20, -10, -20, -30, 30};
+    //     
+    //     // variant 1
+    //      list.remove_if(simple_predicate);
+    //     
+    //      for (auto& value : list)
+    //      {
+    //          std::cout << value << '\n';
+    //      }
+    //
+    //     // Variant 2
+    //      remove_all(list, simple_predicate);
+    //
+    //     // Variant 3
+    //
+    //      list.remove_if([](auto& value)
+    //      {
+    //          return value > 0;
+    //      });
+    //     
+    //      for (auto& value : list)
+    //      {
+    //          std::cout << value << '\n';
+    //      }
+    //     
+    // }
+    //
+    // // Lambda expressions part1
+    //  {
+    //      auto sum = [](auto&& a, auto&& b) -> decltype(auto)
+    //      {
+    //          return a + b;
+    //      };
+    //
+    //      int a = 42, b = 13;
+    //      std::cout << sum(a, b) << '\n';
+    //      std::cout << sum(10.2, 20.2) << '\n';
+    //      std::cout << sum(std::string{"Hello "}, std::string{"world!"}) << '\n';
+    //  }
+    //
+    // // Lambda expressions part2
+    //  {
+    //      int value = 42;
+    //      int value2 = 10;
+    //      
+    //      auto foo = [&value, value2]()
+    //      {
+    //          value = 13;
+    //          // value2 = 40; // readonly/const
+    //      };
+    //      
+    //      foo();
+    //      
+    //      std::cout << value << '\n';
+    //      std::cout << value2 << '\n';
+    //  }
+    //
+    // // Lambda expressions part3
+    //  {
+    //      int a = 10,
+    //          b = 20,
+    //          c = 30;
+    //
+    //      auto lambda_capture_by_ref = [&]()
+    //      {
+    //          a = 11;
+    //          b = 12;
+    //          c = 13;
+    //      };
+    //
+    //      Test obj{};
+    //
+    //      // SFINAE
+    //      auto lambda_capture_by_copy = [=]()
+    //      {
+    //          std::cout << "a + b + c = " << a + b + c << '\n';
+    //      };
+    //
+    //      lambda_capture_by_ref();
+    //      
+    //      std::cout << a << '\n';
+    //      std::cout << b << '\n';
+    //      std::cout << c << '\n';
+    //
+    //      lambda_capture_by_copy();
+    //  }
+
+    //// set, multiset, unordered_set, unordered_multiset
     
+    // {
+    //     std::unordered_set<int> set;
+    //
+    //     srand(time(nullptr));
+    //
+    //     for (int i = 0; i < 15; ++i)
+    //     {
+    //         set.emplace(rand());
+    //     }
+    //     
+    //     set.emplace(42);
+    //     set.emplace(42);
+    //     set.emplace(30);
+    //     set.emplace(20);
+    //     set.emplace(10);
+    //     set.emplace(20);
+    //
+    //     if (set.contains(20))
+    //     {
+    //         std::cout << "20 exists\n";
+    //     }
+    //     
+    //     auto result = set.extract(20);
+    //
+    //     if (!result.empty())
+    //     {
+    //         std::cout << "extract value = " << result.value() << '\n';
+    //     }
+    //     
+    //     std::cout << "count = " << set.count(20) << '\n';
+    //
+    //     int target = 20;
+    //     
+    //     if (set.contains(target))
+    //     {
+    //         auto it = set.find(target);
+    //
+    //         set.erase(it);
+    //     }
+    //     
+    //     for (auto& value : set)
+    //     {
+    //         std::cout << value << '\n';
+    //     }
+    // }
+
+    //// Set custom data type
+    {
+        std::set<User, std::greater<User>> users;
+
+        User user{"Log", "Pass"};
+        
+        users.insert(user);
+        users.emplace("MyLogin", "MyPassword");
+    }
+
+
+    //// pair, tuple, map, unordered_map, multimap, unordered_multimap
+    {
+        //// pair
+        std::pair<std::string, long> pair;
+
+        pair.first = "Value";
+        pair.second = 42L;
+
+        std::tuple tuple{std::string{"str"}, 10L, 20.2};
+
+        auto& first = std::get<0>(tuple);
+        auto& second = std::get<1>(tuple);
+        
+        std::map<std::string, int> values {};
+    }
+
+    printf("\n");
+    system("pause");
     return 0;
 }
