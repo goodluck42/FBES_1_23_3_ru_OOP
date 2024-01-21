@@ -11,6 +11,7 @@
 #include <map>
 #include <unordered_map>
 #include <tuple>
+#include <array>
 
 class User
 {
@@ -393,14 +394,14 @@ int main(int argc, char* argv[])
     // }
 
     //// Set custom data type
-    {
-        std::set<User, std::greater<User>> users;
-
-        User user{"Log", "Pass"};
-        
-        users.insert(user);
-        users.emplace("MyLogin", "MyPassword");
-    }
+    // {
+    //     std::set<User, std::less<User>> users;
+    //
+    //     User user{"Log", "Pass"};
+    //     
+    //     users.insert(user);
+    //     users.emplace("MyLogin", "MyPassword");
+    // }
 
 
     //// pair, tuple, map, unordered_map, multimap, unordered_multimap
@@ -410,13 +411,94 @@ int main(int argc, char* argv[])
 
         pair.first = "Value";
         pair.second = 42L;
-
+        
         std::tuple tuple{std::string{"str"}, 10L, 20.2};
 
-        auto& first = std::get<0>(tuple);
-        auto& second = std::get<1>(tuple);
+        const auto& first = std::get<0>(tuple);
+        const auto& second = std::get<1>(tuple);
         
-        std::map<std::string, int> values {};
+
+        // {
+        //     std::map<int, std::string> values {};
+        //
+        //     values.insert({0, "John"});
+        //     values.insert({1, "Jack"});
+        //     values.insert({2, "Mahmud"});
+        //     values.insert({3, "Ahmed"});
+        //     values.insert({4, "Daniel"});
+        //     values.insert({5, "Petya"});
+        //
+        //     for (auto& value : values)
+        //     {
+        //         std::cout << value.first << ": " << value.second << '\n';
+        //     }
+        //     std::cout << values[0] << '\n';
+        // }
+
+
+        //// map
+        // std::map<std::string, int> values {};
+        //
+        // values.insert({"John", 18});
+        // values.insert({"Jack", 41});
+        // values.insert({"Mahmud", 44});
+        // values.insert({"Ahmed", 18});
+        // values.insert({"Daniel", 20});
+        // values.emplace("Petya", 32);
+        // values.insert({{"Amin", 18}, {"Fuad", 22}});
+        //
+        // values["Vagif"] = 99;
+        // values["Vagif"] = 40;
+        //
+        // if (values.contains("Fuad"))
+        // {
+        //     //// Variant 1
+        //
+        //     auto it = values.find("Fuad");
+        //
+        //     std::cout << "found key: "<< it->first << '\n';
+        //     std::cout << "found value: "<< it->second << '\n';
+        //
+        //     values.erase(it);
+        //     //// Variant 2
+        //     // auto result = values.extract("Fuad");
+        //     //
+        //     // if (!result.empty())
+        //     // {
+        //     //     std::cout << "key = " << result.key() << '\n';
+        //     // }
+        // }
+        //
+        // std::cout << values["Amin"] << '\n';
+        // std::cout << values["Fuad"] << '\n';
+        // std::cout << values["Vagif"] << '\n';
+
+        //// multimap
+
+        std::multimap<std::string, int> values;
+
+        values.insert({"Test", 42});
+        values.insert({"Test", 13});
+        values.insert({"Test", 10});
+
+        values.insert({"Data", 10});
+        values.insert({"Data", 20});
+        values.insert({"Data", 30});
+
+        auto keyValues = values.equal_range("Test");
+
+        auto begin = keyValues.first;
+        auto end = keyValues.second;
+
+        while(begin != end)
+        {
+            std::cout << begin->first << '\n';
+            std::cout << begin->second << '\n';
+
+            ++begin;
+        }
+        
+        //std::cout << values["Data"];
     }
 
     printf("\n");
